@@ -1,635 +1,878 @@
-# 90-Day C#/.NET Practice Roadmap
+# 90-Day C#/.NET Engineering Roadmap
 
-> **Designed for a programmer who already understands variables, functions, classes, and basic control flow.** This plan prioritizes implementation, debugging, tests, documentation, and shipping a complete project—not beginner lectures.
+**Duration:** 90 days  
+**Daily commitment:** 90–120 minutes  
+**Primary stack:** C#, .NET, ASP.NET Core, EF Core, SQL, Git, GitHub  
+**Learning method:** Problem → Design → Implement → Test → Document → Commit
 
-## Goal by Day 90
+## Daily operating routine
 
-Build and publish a professional **Personal Learning Tracker API** using C#, .NET, ASP.NET Core, Entity Framework Core, a relational database, automated tests, GitHub Actions, and clear documentation. The API will track learning goals and daily study sessions, so the final project supports the learning-journal workflow itself.
+Follow this routine every day:
 
-This route emphasizes backend development because it gives you one coherent project to carry from console practice to a real API. Microsoft’s official .NET documentation provides tutorials for apps, Web APIs, data access, authentication, and testing; use those docs as references while writing your own implementation. See the [official .NET tutorials](https://learn.microsoft.com/en-us/dotnet/core/tutorials/), [ASP.NET Core Web API tutorial](https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api), [EF Core getting started](https://learn.microsoft.com/en-us/ef/core/get-started/overview/install), and [testing in .NET](https://learn.microsoft.com/en-us/dotnet/core/testing/).
+- [ ] 10 minutes — Review yesterday's lesson and recall what you learned without reading your notes.
+- [ ] 15–20 minutes — Study one concept through official documentation or a focused example.
+- [ ] 40–50 minutes — Solve the day's programming problem independently.
+- [ ] 15–20 minutes — Test, debug, refactor, and explain your solution.
+- [ ] 10–15 minutes — Write documentation and commit your progress.
 
-## Time commitment and daily rules
-
-- **Target:** 90 days, 6 active learning days plus one lighter review day per week. If a day takes longer, continue the next day rather than skipping tests or documentation.
-- **Daily target:** approximately 90–120 minutes: 10 minutes retrieval practice, 20 minutes documentation/reference reading, 45–60 minutes coding, 10–15 minutes testing/debugging, and 10–15 minutes notes and Git.
-- **Rule 1 — Build, don’t just watch:** read enough to understand the next task, close the tutorial, and implement it yourself.
-- **Rule 2 — Write something every day:** record the idea in your own words, why it matters, what you tried, the result, one problem/fix, and the next question.
-- **Rule 3 — Commit real progress:** commit a coherent working change when possible. Do not fake activity or commit secrets, `bin/`, `obj/`, local database files containing private data, or credentials.
-- **Rule 4 — Test behavior:** for features, include a success case and a failure/edge case. Run `dotnet build` and relevant `dotnet test` before finishing.
-- **Rule 5 — Keep scope small:** the target is a reliable, understandable API, not a microservices architecture.
-
-## Technology baseline
-
-- Use the latest patched **.NET 10 LTS SDK** available to you as the default target; Microsoft lists .NET 10 as active LTS through November 14, 2028 as of October 2026. Check the official [support policy](https://dotnet.microsoft.com/en-us/platform/support/policy) before starting, especially if your machine already has another SDK.
-- Editor: VS Code with the C# Dev Kit or another editor you already use.
-- Version control: Git and a GitHub repository.
-- Database: PostgreSQL is preferred for realistic backend practice; SQLite is an acceptable fallback if local database setup becomes a blocker. Keep the database provider choice consistent once migrations are created.
-- Testing: choose one mainstream .NET test framework (for example, xUnit or MSTest) and use it consistently.
-- Security: use standard ASP.NET Core authentication guidance or a trusted identity provider; do not invent your own password hashing or token system for production.
-
-## Repository layout
-
-```text
-dotnet-90-day-lab/
-├── README.md
-├── docs/
-│   ├── roadmap.md
-│   ├── daily/                  # day-001.md ... day-090.md
-│   └── weekly/                 # weekly reviews and retrospectives
-├── src/
-│   ├── ConsolePractice/        # early C#/.NET experiments
-│   └── LearningTracker.Api/    # capstone Web API
-├── tests/
-│   ├── LearningTracker.UnitTests/
-│   └── LearningTracker.IntegrationTests/
-├── .editorconfig
-└── .gitignore
-```
-
-You may introduce separate Domain/Application/Infrastructure projects later only if the project has a clear reason for them. Avoid adding architecture layers just to make the folder tree look professional.
-
-## The daily Definition of Done
-
-Use this checklist every day, in addition to the specific task listed below:
-
-- [ ] Implemented the day’s task without blindly copying a solution.
-- [ ] Built and/or ran the code; tested a normal path and at least one relevant edge case.
-- [ ] Wrote `docs/daily/day-NNN.md` with: goal, key concept in my words, what I built, commands/run output, problem and fix, test results, and what comes next.
-- [ ] Updated the main README or weekly progress summary when a milestone changed.
-- [ ] Committed meaningful changes to Git with a specific message, e.g. `day-012: persist sessions as JSON`.
-- [ ] If blocked, wrote down the exact error, what I tried, and the next experiment rather than silently abandoning the task.
-
-Suggested daily note template: copy `templates/daily-note-template.md` below into `docs/daily/day-NNN.md` (create the `templates/` folder if you want to store it separately).
-
-```markdown
-# Day NNN — Title
-- Date:
-- Time spent:
-- Goal:
-## What I learned (in my own words)
-## What I built
-## Commands and example output
-## Tests and results
-## Problem encountered and how I investigated it
-## What I would improve
-## Next step
-## Commit
-```
-
-## Phase map
-
-| Days | Focus | Evidence at the end |
-|---|---|---|
-| 1–14 | C# fluency and robust CLI programs | JSON-backed Learning Tracker CLI |
-| 15–28 | Testing, design, configuration, logging, DI, HTTP | Tested, maintainable CLI v1.0 |
-| 29–42 | ASP.NET Core Web API and EF Core | Database-backed API with CRUD |
-| 43–56 | Service structure, API features, tests | Filtered/paginated API with integration tests |
-| 57–70 | Security and operations | Authorization, health, logging, operational review |
-| 71–84 | Release workflow, CI/container/deployment, capstone | Release candidate and professional docs |
-| 85–90 | Audit, polish, final release and retrospective | Reproducible portfolio project v1.0 |
+If you need more time to solve a problem, prioritize understanding it over completing every task on schedule.
 
 ---
 
-## 90-day daily checklist
-
-### Week 1 — Tooling, C# fluency, and deliberate practice
-
-#### Day 01 — Set up the learning repository
-- [ ] **Build/practice:** Verify the .NET SDK with `dotnet --info`; install/update Git and the C# VS Code extension; create the repository, a solution, a console project, `.gitignore`, `README.md`, and `docs/daily/`.
-- [ ] **Evidence:** A clean repository and a console app that builds.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-001:`.
-
-#### Day 02 — Use the CLI and debugger
-- [ ] **Build/practice:** Run `dotnet build`, `dotnet run`, and `dotnet clean`; add breakpoints, inspect locals, step into/over, and reproduce one bug before fixing it.
-- [ ] **Evidence:** A short debugging note with the original bug and fix.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-002:`.
-
-#### Day 03 — Practice strings, parsing, and formatting
-- [ ] **Build/practice:** Build a console calculator or unit converter. Handle invalid input with `TryParse`; use interpolation and format numeric output clearly.
-- [ ] **Evidence:** An input-driven program that handles invalid input without crashing.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-003:`.
-
-#### Day 04 — Work with collections
-- [ ] **Build/practice:** Use arrays, `List<T>`, `Dictionary<TKey,TValue>`, and `HashSet<T>` to manage a small set of study activities. Add, find, update, and remove items.
-- [ ] **Evidence:** A collection exercise with examples of when each collection fits.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-004:`.
-
-#### Day 05 — Use LINQ in real code
-- [ ] **Build/practice:** Practice `Where`, `Select`, `OrderBy`, `Any`, `FirstOrDefault`, `Count`, and `Sum` on sample study records. Compare a loop with a LINQ query.
-- [ ] **Evidence:** A report that filters and summarizes the sample data.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-005:`.
-
-#### Day 06 — Practice records, enums, and pattern matching
-- [ ] **Build/practice:** Model a learning session using a `record` and a status `enum`; use a `switch` expression or pattern matching to format each status.
-- [ ] **Evidence:** A small model with readable status-handling code.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-006:`.
-
-#### Day 07 — Weekly review and timed challenge
-- [ ] **Build/practice:** Without copying a tutorial, build a console program that stores sessions in memory, validates input, and prints a summary. Review all Week 1 notes.
-- [ ] **Evidence:** A working mini-project and a list of three strengths and three gaps.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-007:`.
-
-### Week 2 — Stronger C# and robust program behavior
-
-#### Day 08 — Nullable reference types and guard clauses
-- [ ] **Build/practice:** Enable nullable reference types; handle missing values intentionally. Add guard clauses and avoid using `!` just to silence warnings.
-- [ ] **Evidence:** A null-safe version of an earlier exercise.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-008:`.
-
-#### Day 09 — Exceptions and validation
-- [ ] **Build/practice:** Distinguish expected invalid user input from exceptional failures. Use `try/catch` narrowly, and never swallow exceptions silently.
-- [ ] **Evidence:** A validation/error-handling decision note with tested cases.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-009:`.
-
-#### Day 10 — Generics and reusable code
-- [ ] **Build/practice:** Create a small generic helper or generic collection-based component. Decide whether generics make the code clearer than a concrete implementation.
-- [ ] **Evidence:** A reusable component with at least two type examples.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-010:`.
-
-#### Day 11 — Interfaces and composition
-- [ ] **Build/practice:** Model a study log service behind an interface. Inject its dependency through a constructor instead of constructing dependencies deep inside the class.
-- [ ] **Evidence:** A class that can use either a real or fake implementation.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-011:`.
-
-#### Day 12 — Asynchronous programming
-- [ ] **Build/practice:** Use `async`/`await`, `Task` and `Task<T>` in a simple asynchronous workflow. Pass a `CancellationToken` to a cancellable operation.
-- [ ] **Evidence:** A program that awaits work correctly and can cancel it.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-012:`.
-
-#### Day 13 — Files, paths, and JSON
-- [ ] **Build/practice:** Persist learning-session records to a JSON file. Use `System.IO` and `System.Text.Json`; handle a missing file and invalid JSON deliberately.
-- [ ] **Evidence:** Data survives restarting the program; document the JSON shape.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-013:`.
-
-#### Day 14 — Milestone 1: Learning Tracker CLI
-- [ ] **Build/practice:** Build a command-line app that can add, list, complete, and delete learning goals or sessions, and stores them in JSON. Refactor duplicated logic.
-- [ ] **Evidence:** A usable CLI project with a README and sample run.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-014:`.
-
-### Week 3 — Testing, design, and maintainability
-
-#### Day 15 — Create a test project
-- [ ] **Build/practice:** Add a unit-test project to the solution using a supported framework such as xUnit or MSTest. Run tests with `dotnet test`.
-- [ ] **Evidence:** A test project that runs from the terminal.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-015:`.
-
-#### Day 16 — Test behavior and edge cases
-- [ ] **Build/practice:** Write tests for successful inputs, invalid inputs, empty collections, missing records, and boundary values. Use Arrange–Act–Assert.
-- [ ] **Evidence:** At least 8 meaningful unit tests.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-016:`.
-
-#### Day 17 — Practice test-driven development
-- [ ] **Build/practice:** Choose a business rule (for example, a study session must have a positive duration). Write a failing test, implement the rule, then refactor.
-- [ ] **Evidence:** A commit history showing test-first development.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-017:`.
-
-#### Day 18 — Use test doubles effectively
-- [ ] **Build/practice:** Replace a dependency such as a file store or clock with a fake implementation in tests. Avoid mocking internal details unnecessarily.
-- [ ] **Evidence:** Tests run without depending on your real JSON file.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-018:`.
-
-#### Day 19 — Refactor around responsibilities
-- [ ] **Build/practice:** Identify a class doing too many things. Separate validation, business rules, persistence, and presentation only where the separation makes the code easier to change.
-- [ ] **Evidence:** A before/after note describing why the design improved.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-019:`.
-
-#### Day 20 — Add code-quality conventions
-- [ ] **Build/practice:** Add an `.editorconfig`; standardize naming and formatting; enable useful compiler warnings; add XML comments only to public APIs where they add value.
-- [ ] **Evidence:** Consistent formatting and a clean build.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-020:`.
-
-#### Day 21 — Milestone 2: tested CLI
-- [ ] **Build/practice:** Run the app from a clean checkout; test normal and failure paths; remove dead code and update the README with commands and limitations.
-- [ ] **Evidence:** Version 0.2 of the CLI with repeatable tests.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-021:`.
-
-### Week 4 — .NET application infrastructure
-
-#### Day 22 — Make HTTP requests
-- [ ] **Build/practice:** Use `HttpClient` to call a public test API or a local endpoint. Read status codes, deserialize JSON, and handle timeouts and network failures.
-- [ ] **Evidence:** A small HTTP client with documented failure behavior.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-022:`.
-
-#### Day 23 — Use configuration
-- [ ] **Build/practice:** Move suitable settings into `appsettings.json` and environment variables. Keep secrets and credentials out of source control.
-- [ ] **Evidence:** A configuration example that works in development without committed secrets.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-023:`.
-
-#### Day 24 — Add logging
-- [ ] **Build/practice:** Use `ILogger<T>` and meaningful log levels. Log state transitions and failures without logging passwords, tokens, or sensitive data.
-- [ ] **Evidence:** Useful logs that help diagnose one deliberately reproduced issue.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-024:`.
-
-#### Day 25 — Practice dependency injection lifetimes
-- [ ] **Build/practice:** Register services with the built-in DI container; experiment with singleton, scoped, and transient lifetimes in a small example.
-- [ ] **Evidence:** A note explaining which lifetime fits each service and why.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-025:`.
-
-#### Day 26 — Use the options pattern
-- [ ] **Build/practice:** Bind a configuration section to a typed options class and validate required settings at startup where practical.
-- [ ] **Evidence:** A typed settings class and a tested invalid-configuration case.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-026:`.
-
-#### Day 27 — Separate environment-specific behavior
-- [ ] **Build/practice:** Use development configuration and environment variables; verify that changing configuration does not require editing application code.
-- [ ] **Evidence:** A program that behaves differently via configuration, not code edits.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-027:`.
-
-#### Day 28 — Milestone 3: maintainable CLI
-- [ ] **Build/practice:** Integrate configuration, logging, DI, JSON persistence, and tests into the CLI. Keep it small; do not add abstractions without a reason.
-- [ ] **Evidence:** A polished CLI v1.0, with usage instructions and known limitations.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-028:`.
-
-### Week 5 — HTTP and ASP.NET Core Web API
-
-#### Day 29 — Design resources and endpoints
-- [ ] **Build/practice:** Sketch REST resources for a Personal Learning Tracker API: learning goals and daily study sessions. Define endpoints and expected status codes before coding.
-- [ ] **Evidence:** An endpoint table and sample JSON request/response bodies.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-029:`.
-
-#### Day 30 — Create the Web API project
-- [ ] **Build/practice:** Create an ASP.NET Core controller-based Web API in the solution. Run it, inspect the template, and understand `Program.cs`, middleware, routing, and OpenAPI output.
-- [ ] **Evidence:** The API launches locally and its generated docs are accessible.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-030:`.
-
-#### Day 31 — Build read endpoints
-- [ ] **Build/practice:** Implement `GET` endpoints using in-memory data first. Return appropriate results for collection and single-item requests, including not found.
-- [ ] **Evidence:** Working read endpoints tested with `.http` requests or curl.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-031:`.
-
-#### Day 32 — Build create endpoints
-- [ ] **Build/practice:** Add a request DTO and a `POST` action. Validate incoming data and return `201 Created` with a location when creation succeeds.
-- [ ] **Evidence:** A create request and tests for valid and invalid input.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-032:`.
-
-#### Day 33 — Implement update and delete
-- [ ] **Build/practice:** Add update and delete behavior. Define missing-ID behavior and use HTTP status codes consistently.
-- [ ] **Evidence:** CRUD behavior demonstrated through repeatable requests.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-033:`.
-
-#### Day 34 — Handle errors consistently
-- [ ] **Build/practice:** Use a consistent error response such as Problem Details and a global exception handler where suitable. Do not return stack traces to clients.
-- [ ] **Evidence:** Documented error shape and tested 400/404/500 behavior.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-034:`.
-
-#### Day 35 — Milestone 4: in-memory API
-- [ ] **Build/practice:** Review naming, routes, response codes, DTOs, and endpoint behavior. Update the README with how to start and test the API.
-- [ ] **Evidence:** An API prototype that works before adding a database.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-035:`.
-
-### Week 6 — EF Core and relational persistence
-
-#### Day 36 — Design the data model
-- [ ] **Build/practice:** Design `LearningGoal` and `StudySession` entities and their relationship. Define required fields, length limits, statuses, and date/time meaning.
-- [ ] **Evidence:** A simple ER diagram or written relationship description.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-036:`.
-
-#### Day 37 — Add Entity Framework Core
-- [ ] **Build/practice:** Choose a database. Prefer PostgreSQL if you can run it locally; SQLite is a practical fallback. Add the matching EF Core provider and register `DbContext`.
-- [ ] **Evidence:** The API connects to a local development database.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-037:`.
-
-#### Day 38 — Create and apply migrations
-- [ ] **Build/practice:** Install/configure EF Core tooling, create the initial migration, apply it, and inspect the resulting schema. Keep migrations in source control.
-- [ ] **Evidence:** A reproducible database schema created from migrations.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-038:`.
-
-#### Day 39 — Query data safely and efficiently
-- [ ] **Build/practice:** Implement async list/detail queries. Use `AsNoTracking` for read-only queries where appropriate and project to DTOs rather than exposing EF entities.
-- [ ] **Evidence:** Read endpoints now return persisted data.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-039:`.
-
-#### Day 40 — Persist create, update, and delete
-- [ ] **Build/practice:** Move CRUD operations to the database. Handle missing records and save changes asynchronously.
-- [ ] **Evidence:** CRUD works after restarting the API.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-040:`.
-
-#### Day 41 — Model relationships and constraints
-- [ ] **Build/practice:** Add the relationship between learning goals and sessions. Add appropriate required fields, maximum lengths, foreign keys, and indexes where justified.
-- [ ] **Evidence:** Relationship and constraint behavior verified.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-041:`.
-
-#### Day 42 — Milestone 5: database-backed API
-- [ ] **Build/practice:** Rebuild the database from migrations, test CRUD end to end, and document database setup and reset steps.
-- [ ] **Evidence:** The API runs against a real relational database.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-042:`.
-
-### Week 7 — Application structure and useful API features
-
-#### Day 43 — Extract application services
-- [ ] **Build/practice:** Move business operations out of controllers into focused services where that separation improves testability. Keep controllers thin.
-- [ ] **Evidence:** Controllers mostly handle HTTP concerns; services handle use cases.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-043:`.
-
-#### Day 44 — Use DTOs and mapping deliberately
-- [ ] **Build/practice:** Separate request DTOs, response DTOs, and database entities. Map them explicitly and prevent clients from setting server-managed fields.
-- [ ] **Evidence:** Create/update requests cannot over-post protected fields.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-044:`.
-
-#### Day 45 — Add filtering and sorting
-- [ ] **Build/practice:** Allow safe filters such as status or date range and a small whitelist of sort fields. Validate query parameters.
-- [ ] **Evidence:** Documented filters with tests for supported and invalid values.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-045:`.
-
-#### Day 46 — Add pagination
-- [ ] **Build/practice:** Implement `page`/`pageSize` or cursor-style pagination, with sensible limits and stable ordering. Return metadata when useful.
-- [ ] **Evidence:** Large collections return predictable pages rather than everything at once.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-046:`.
-
-#### Day 47 — Validate business rules
-- [ ] **Build/practice:** Add rules such as end time after start time, positive duration, valid status transitions, and title length. Keep rules out of HTTP-only code when reusable.
-- [ ] **Evidence:** Unit tests cover both valid and invalid domain inputs.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-047:`.
-
-#### Day 48 — Support cancellation and async database calls
-- [ ] **Build/practice:** Pass `CancellationToken` through controller/service/database calls. Remove unnecessary `.Result`, `.Wait()`, and `async void` patterns.
-- [ ] **Evidence:** Async flow is consistent and cancellable.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-048:`.
-
-#### Day 49 — Milestone 6: API feature review
-- [ ] **Build/practice:** Run all tests; manually test filtering, sorting, pagination, and validation. Review the shape of the service layer and simplify overengineering.
-- [ ] **Evidence:** A maintainable API feature set and updated API examples.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-049:`.
-
-### Week 8 — Automated testing from unit to integration
-
-#### Day 50 — Test service-level business rules
-- [ ] **Build/practice:** Test service behavior with in-memory fakes or test doubles where suitable. Include successful, missing-data, and invalid-input cases.
-- [ ] **Evidence:** Focused unit tests for important rules.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-050:`.
-
-#### Day 51 — Set up API integration tests
-- [ ] **Build/practice:** Use `WebApplicationFactory` or the supported ASP.NET Core integration-test approach. Make test configuration separate from development configuration.
-- [ ] **Evidence:** Integration tests can start the API test host automatically.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-051:`.
-
-#### Day 52 — Test HTTP contracts
-- [ ] **Build/practice:** Test endpoint routes, status codes, headers, response bodies, and validation failures. Assert observable behavior rather than private implementation details.
-- [ ] **Evidence:** Tests cover the main endpoint contracts.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-052:`.
-
-#### Day 53 — Isolate database tests
-- [ ] **Build/practice:** Choose a reliable test database strategy. Avoid assuming EF Core's in-memory provider behaves exactly like a relational database; test migrations/constraints with a relational provider where possible.
-- [ ] **Evidence:** Database-backed tests are repeatable and isolated.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-053:`.
-
-#### Day 54 — Test global failures and edge cases
-- [ ] **Build/practice:** Test not-found responses, conflicting or invalid data, unexpected errors, and empty/paginated results.
-- [ ] **Evidence:** A test matrix of expected API outcomes.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-054:`.
-
-#### Day 55 — Measure and improve test coverage
-- [ ] **Build/practice:** Run coverage tooling if available. Find untested critical behavior; focus on meaningful scenarios rather than chasing a percentage.
-- [ ] **Evidence:** A short coverage note and a list of remaining gaps.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-055:`.
-
-#### Day 56 — Milestone 7: confidence check
-- [ ] **Build/practice:** Run `dotnet test` from the repository root and fix flaky tests. Record the exact command and expected result in documentation.
-- [ ] **Evidence:** A repeatable test suite ready for CI.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-056:`.
-
-### Week 9 — Authentication, authorization, and security
-
-#### Day 57 — Understand the security model
-- [ ] **Build/practice:** Document assets, trust boundaries, and threats for the API. Distinguish authentication (who are you?) from authorization (what may you do?).
-- [ ] **Evidence:** A small threat-model note with top risks and mitigations.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-057:`.
-
-#### Day 58 — Choose a standard authentication approach
-- [ ] **Build/practice:** Follow current ASP.NET Core guidance for bearer-token authentication or an identity provider. Avoid inventing a token scheme or storing plaintext passwords.
-- [ ] **Evidence:** A documented setup decision and secure local configuration.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-058:`.
-
-#### Day 59 — Protect private endpoints
-- [ ] **Build/practice:** Require authenticated users for selected endpoints. Keep secrets in local user-secrets/environment variables and never commit tokens or signing keys.
-- [ ] **Evidence:** Anonymous requests are denied where expected.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-059:`.
-
-#### Day 60 — Enforce resource ownership
-- [ ] **Build/practice:** Associate user-owned goals/sessions with the current user and ensure one user cannot read or modify another user's data.
-- [ ] **Evidence:** Ownership rules and tests for cross-user access.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-060:`.
-
-#### Day 61 — Add policy-based authorization
-- [ ] **Build/practice:** Add one policy for a meaningful rule. Keep authorization checks explicit and central enough to audit.
-- [ ] **Evidence:** A policy-protected endpoint with allowed/denied tests.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-061:`.
-
-#### Day 62 — Harden inputs and transport
-- [ ] **Build/practice:** Review HTTPS, CORS allowlists, request-size limits, rate limiting where suitable, dependency updates, and error details. Do not treat CORS as authentication.
-- [ ] **Evidence:** A security checklist with fixes for the risks found.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-062:`.
-
-#### Day 63 — Milestone 8: security review
-- [ ] **Build/practice:** Test unauthenticated, authenticated-but-forbidden, and authorized requests. Review configuration and repository history for accidental secrets.
-- [ ] **Evidence:** Security behavior is documented and verified.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-063:`.
-
-### Week 10 — Observability, API quality, and resilience
-
-#### Day 64 — Improve OpenAPI documentation
-- [ ] **Build/practice:** Add useful summaries, response types, example requests, validation notes, and authentication descriptions. Ensure docs match actual API behavior.
-- [ ] **Evidence:** A developer can use the API without reading source code.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-064:`.
-
-#### Day 65 — Add health checks
-- [ ] **Build/practice:** Add a health endpoint and, where appropriate, a database readiness check. Do not reveal sensitive configuration in health responses.
-- [ ] **Evidence:** Health/readiness behavior is clear and testable.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-065:`.
-
-#### Day 66 — Improve structured logging
-- [ ] **Build/practice:** Log request failures and important business events with structured properties; avoid personally sensitive data and secrets.
-- [ ] **Evidence:** Logs help diagnose an intentionally reproduced failure.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-066:`.
-
-#### Day 67 — Review database performance
-- [ ] **Build/practice:** Inspect generated SQL for key queries. Add indexes only where query patterns justify them; avoid loading related data unnecessarily.
-- [ ] **Evidence:** One query improvement backed by an explanation or measurement.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-067:`.
-
-#### Day 68 — Review outbound HTTP resilience
-- [ ] **Build/practice:** If the app calls external services, configure timeouts and an appropriate resilience strategy. Do not retry non-idempotent actions blindly.
-- [ ] **Evidence:** A documented timeout/failure strategy.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-068:`.
-
-#### Day 69 — Check cancellation and error boundaries
-- [ ] **Build/practice:** Ensure cancellation is propagated and errors are translated consistently. Distinguish client errors from unexpected server faults.
-- [ ] **Evidence:** A consistent exception and cancellation policy.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-069:`.
-
-#### Day 70 — Milestone 9: operational review
-- [ ] **Build/practice:** Run a small end-to-end scenario while watching logs, health checks, and database behavior. Fix the most important operational gap.
-- [ ] **Evidence:** An operations note describing how to diagnose common failures.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-070:`.
-
-### Week 11 — GitHub workflow, containers, and deployment
-
-#### Day 71 — Create a clean build and publish
-- [ ] **Build/practice:** Run Release builds and `dotnet publish`. Inspect outputs and verify the published app starts with configuration supplied externally.
-- [ ] **Evidence:** A repeatable publish command and successful smoke test.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-071:`.
-
-#### Day 72 — Containerize the API
-- [ ] **Build/practice:** Write a multi-stage Dockerfile based on official .NET images, use a non-root runtime where appropriate, and keep secrets out of image layers.
-- [ ] **Evidence:** The API builds and runs in a container.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-072:`.
-
-#### Day 73 — Run the database and API locally
-- [ ] **Build/practice:** Use Docker Compose if available to coordinate the API and database. Configure service names, persistent data as needed, and environment variables.
-- [ ] **Evidence:** A documented one-command local environment.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-073:`.
-
-#### Day 74 — Automate CI with GitHub Actions
-- [ ] **Build/practice:** Add a workflow that restores, builds, and runs tests on pushes and pull requests. Use supported, maintained action versions.
-- [ ] **Evidence:** A green CI run visible on GitHub.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-074:`.
-
-#### Day 75 — Add branch and review discipline
-- [ ] **Build/practice:** Create a feature branch, open a pull request against your own repository, review the diff, and merge only after checks pass.
-- [ ] **Evidence:** One complete practice PR and a clean main branch.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-075:`.
-
-#### Day 76 — Prepare a release
-- [ ] **Build/practice:** Use a version tag or GitHub Release; write release notes, list breaking changes, and record configuration/database requirements.
-- [ ] **Evidence:** A versioned release candidate.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-076:`.
-
-#### Day 77 — Deploy if a suitable free/starter environment is available
-- [ ] **Build/practice:** Deploy the API and database or follow a documented local deployment path if hosting requires payment or account setup. Verify health, logs, and database connectivity.
-- [ ] **Evidence:** A deployment URL or a complete reproducible deployment guide.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-077:`.
-
-### Week 12 — Capstone completion and portfolio polish
-
-#### Day 78 — Freeze capstone scope
-- [ ] **Build/practice:** Write user stories and acceptance criteria for the Personal Learning Tracker: goals, sessions, status, summaries, filters, and user access. Create GitHub Issues for remaining work.
-- [ ] **Evidence:** A small, prioritized backlog—no feature creep.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-078:`.
-
-#### Day 79 — Finish end-to-end goal workflows
-- [ ] **Build/practice:** Complete create, view, edit, complete/archive, and delete workflows; check missing IDs and invalid values.
-- [ ] **Evidence:** All core goal workflows pass manual and automated tests.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-079:`.
-
-#### Day 80 — Finish study-session workflows
-- [ ] **Build/practice:** Complete create/list/update/delete session workflows and summaries of time studied by date range or goal.
-- [ ] **Evidence:** A user can record sessions and see useful progress summaries.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-080:`.
-
-#### Day 81 — Polish API contract and errors
-- [ ] **Build/practice:** Review pagination limits, validation responses, status codes, date/time handling, and DTO boundaries. Remove inconsistent endpoint behavior.
-- [ ] **Evidence:** Consistent, documented API responses.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-081:`.
-
-#### Day 82 — Finish critical tests
-- [ ] **Build/practice:** Add or refine unit and integration tests for the highest-risk behaviors: ownership, validation, persistence, and error handling.
-- [ ] **Evidence:** All critical paths have automated tests and CI passes.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-082:`.
-
-#### Day 83 — Write professional documentation
-- [ ] **Build/practice:** Update README with purpose, feature list, architecture, prerequisites, setup, configuration, migrations, running tests, API examples, screenshots/diagrams if useful, and known limitations.
-- [ ] **Evidence:** A new developer can clone and run the project using only the README.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-083:`.
-
-#### Day 84 — Release v1.0 and retrospect
-- [ ] **Build/practice:** Clone into a clean directory and follow your own README. Fix setup gaps, tag a release, review all 90 daily notes, and write the next 90-day plan based on evidence.
-- [ ] **Evidence:** A tagged, reproducible portfolio project and a written retrospective.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-084:`.
-
-### Final stretch — polish and release
-
-#### Day 85 — Security and configuration audit
-- [ ] **Build/practice:** Audit secrets, authentication, authorization, environment settings, CORS, error responses, and dependency versions. Remove any secrets from tracked files and rotate exposed credentials if any were committed.
-- [ ] **Evidence:** A completed security checklist and documented fixes.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-085:`.
-
-#### Day 86 — Performance and database audit
-- [ ] **Build/practice:** Recheck slow queries, pagination limits, indexes, async calls, and unnecessary allocations. Measure before optimizing; write down the baseline and result.
-- [ ] **Evidence:** One measured improvement or a clear record that no optimization was justified.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-086:`.
-
-#### Day 87 — Code readability pass
-- [ ] **Build/practice:** Review naming, methods, dependency boundaries, duplicated code, null handling, and exception flow. Use formatting and analyzers; don't refactor solely to follow a pattern.
-- [ ] **Evidence:** A clean diff focused on maintainability.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-087:`.
-
-#### Day 88 — Fresh-machine setup test
-- [ ] **Build/practice:** Pretend you are a new contributor: start from a clean clone, follow the README, set environment variables, apply migrations, run tests, and start the API.
-- [ ] **Evidence:** A first-time setup succeeds without undocumented steps.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-088:`.
-
-#### Day 89 — Portfolio presentation
-- [ ] **Build/practice:** Add a concise project summary, architecture sketch, sample requests/responses, test/CI status, screenshots only if useful, and a demo script. Link to selected daily notes.
-- [ ] **Evidence:** A repository that clearly demonstrates your engineering process.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-089:`.
-
-#### Day 90 — Final assessment and next plan
-- [ ] **Build/practice:** Rate yourself 1–5 on C#, .NET CLI, API design, EF Core/SQL, testing, security, debugging, Git, and documentation. List the five biggest gaps and choose one specialization for the next quarter.
-- [ ] **Evidence:** A retrospective and evidence-based next learning plan.
-- [ ] **Document and commit:** complete the daily Definition of Done; use commit prefix `day-090:`.
-
-## Weekly review — do this on Days 7, 14, 21, and every seventh day after that
-
-- [ ] Build the whole solution and run all tests from the terminal.
-- [ ] Review the week’s daily notes. Rewrite vague notes so they explain the why, not just the what.
-- [ ] Identify one repeated mistake or knowledge gap and schedule a focused exercise for the next week.
-- [ ] Check Git history: meaningful commit messages, no credentials, no generated build folders, no giant unrelated commits.
-- [ ] Update the README progress table with completed days, current milestone, tests passing, and next milestone.
-- [ ] Spend the review day strengthening or finishing work—not adding new scope to compensate for missed days.
-
-## Suggested Git routine
-
-```bash
-git status
-dotnet build
-dotnet test
-git add .
-git commit -m "day-001: initialize learning repository"
-git push
+# MONTH 1 — Problem Solving, C# and Object-Oriented Design
+
+**Goal:** Become confident translating real-world problems into algorithms, classes, methods, and tests.
+
+## Week 1 — Problem decomposition and C# practice
+
+### Day 1 — Establish your development environment
+- [ ] Verify the .NET SDK, Git, and VS Code.
+- [ ] Create a console project named `ProblemSolvingLab`.
+- [ ] Create a Git repository and make your first commit.
+- [ ] Write your learning objectives in `README.md`.
+
+**Deliverable:** A working project and a documented repository.
+
+### Day 2 — Break problems into smaller steps
+- [ ] Solve a temperature conversion problem.
+- [ ] Write the inputs, outputs, constraints, and examples before coding.
+- [ ] Write pseudocode before implementing the solution.
+- [ ] Test normal, minimum, and invalid inputs.
+
+**Deliverable:** `TemperatureConverter.cs` and a problem-analysis note.
+
+### Day 3 — Conditions and decision-making
+- [ ] Build a shipping-cost calculator based on weight and destination.
+- [ ] Identify all decision branches before coding.
+- [ ] Test boundary values and invalid input.
+- [ ] Refactor complicated conditions into readable methods.
+
+**Deliverable:** A tested shipping calculator.
+
+### Day 4 — Loops and collections
+- [ ] Build a program that analyzes a list of numbers.
+- [ ] Calculate the minimum, maximum, average, and sum.
+- [ ] Handle an empty collection.
+- [ ] Compare a loop-based solution with built-in collection methods.
+
+**Deliverable:** A reusable number-analysis program.
+
+### Day 5 — Methods and decomposition
+- [ ] Build a simple expense calculator.
+- [ ] Divide the program into small methods with clear responsibilities.
+- [ ] Avoid repeating calculation logic.
+- [ ] Test each method independently where practical.
+
+**Deliverable:** A program organized into focused methods.
+
+### Day 6 — Dictionaries and counting
+- [ ] Build a word-frequency counter.
+- [ ] Count how many times each word occurs.
+- [ ] Decide how to handle capitalization and punctuation.
+- [ ] Test repeated words, empty text, and mixed capitalization.
+
+**Deliverable:** A text-analysis utility.
+
+### Day 7 — Weekly problem-solving assessment
+- [ ] Solve a new problem: analyze student scores and assign grades.
+- [ ] Write requirements and pseudocode without a tutorial.
+- [ ] Implement and test your solution.
+- [ ] Document what slowed you down and what you learned.
+
+**Deliverable:** A complete, independently solved problem.
+
+## Week 2 — Learning to think in classes
+
+### Day 8 — Identify classes from requirements
+- [ ] Design a library book-management problem.
+- [ ] Identify candidate classes, such as `Book`, `Member`, and `Library`.
+- [ ] Explain what information and behavior each class owns.
+- [ ] Sketch the relationships before writing code.
+
+**Deliverable:** A class-responsibility design document.
+
+### Day 9 — Encapsulation and invariants
+- [ ] Implement a `BankAccount` class.
+- [ ] Support depositing and withdrawing money.
+- [ ] Prevent invalid balances and invalid transaction amounts.
+- [ ] Test that invalid operations do not corrupt account state.
+
+**Deliverable:** A `BankAccount` class with tested business rules.
+
+### Day 10 — Constructors and object state
+- [ ] Build a `Product` class with required initial values.
+- [ ] Prevent invalid product prices and identifiers.
+- [ ] Decide which properties should be changeable.
+- [ ] Test object creation with valid and invalid data.
+
+**Deliverable:** A class that protects its valid state.
+
+### Day 11 — Responsibilities and collaboration
+- [ ] Design an order-processing problem.
+- [ ] Separate `Product`, `OrderItem`, and `Order`.
+- [ ] Calculate order totals without duplicating logic.
+- [ ] Explain why each calculation belongs in its chosen class.
+
+**Deliverable:** A working order model.
+
+### Day 12 — Relationships between objects
+- [ ] Model a university with students and courses.
+- [ ] Represent enrollment using appropriate objects and collections.
+- [ ] Add enrollment and withdrawal operations.
+- [ ] Prevent duplicate enrollment.
+
+**Deliverable:** A small university enrollment model.
+
+### Day 13 — Interfaces and polymorphism
+- [ ] Model different payment methods.
+- [ ] Introduce an `IPaymentMethod` interface.
+- [ ] Implement two payment-method classes.
+- [ ] Process payments through the interface rather than concrete types.
+
+**Deliverable:** An extensible payment-processing exercise.
+
+### Day 14 — Weekly object-oriented assessment
+- [ ] Design a parking-lot system with vehicles, parking spaces, and tickets.
+- [ ] Identify class responsibilities before coding.
+- [ ] Implement parking and vehicle retrieval.
+- [ ] Test full parking lots, duplicate operations, and invalid tickets.
+- [ ] Document your design decisions.
+
+**Deliverable:** A small object-oriented parking system.
+
+## Week 3 — Stronger C# design and problem-solving
+
+### Day 15 — Inheritance versus composition
+- [ ] Model employees and payroll calculations.
+- [ ] Decide whether inheritance or composition better fits the requirements.
+- [ ] Implement two employee payment policies.
+- [ ] Explain the trade-offs in your documentation.
+
+**Deliverable:** An employee payroll model.
+
+### Day 16 — Generics and reusable code
+- [ ] Build a generic in-memory repository.
+- [ ] Support adding, finding, and removing items.
+- [ ] Add an appropriate identifier strategy.
+- [ ] Test the repository with two different entity types.
+
+**Deliverable:** A reusable generic collection component.
+
+### Day 17 — Exceptions and validation
+- [ ] Build a user-registration validator.
+- [ ] Distinguish invalid user input from unexpected system failures.
+- [ ] Choose suitable validation results or exceptions.
+- [ ] Test missing fields and invalid values.
+
+**Deliverable:** A validation component with predictable failure behavior.
+
+### Day 18 — LINQ and data transformation
+- [ ] Analyze a collection of orders using LINQ.
+- [ ] Filter, sort, group, and aggregate the data.
+- [ ] Calculate sales totals by category.
+- [ ] Compare the readability of LINQ and loop-based solutions.
+
+**Deliverable:** An order-reporting utility.
+
+### Day 19 — Delegates and events
+- [ ] Build an inventory notification example.
+- [ ] Raise an event when stock falls below a threshold.
+- [ ] Separate the inventory model from notification behavior.
+- [ ] Test that the event occurs under the correct conditions.
+
+**Deliverable:** An event-driven inventory exercise.
+
+### Day 20 — Files and JSON
+- [ ] Save a collection of expenses to JSON.
+- [ ] Load saved data when the application starts.
+- [ ] Handle missing or malformed files safely.
+- [ ] Test saving, loading, and recovery scenarios.
+
+**Deliverable:** A persistent expense-tracking console app.
+
+### Day 21 — Weekly assessment
+- [ ] Solve a small inventory-management problem without copying a solution.
+- [ ] Use classes, collections, validation, and LINQ where appropriate.
+- [ ] Add tests for the core business rules.
+- [ ] Refactor any class that has too many responsibilities.
+
+**Deliverable:** A documented inventory application.
+
+## Week 4 — Testing and maintainable design
+
+### Day 22 — Unit testing with xUnit
+- [ ] Create a separate test project.
+- [ ] Write tests for `BankAccount` or `Product`.
+- [ ] Practice Arrange–Act–Assert.
+- [ ] Run tests from the terminal.
+
+**Deliverable:** A repeatable automated test suite.
+
+### Day 23 — Test-driven development
+- [ ] Implement a discount-calculation requirement.
+- [ ] Write a failing test first.
+- [ ] Implement the smallest change that passes.
+- [ ] Refactor while keeping tests green.
+
+**Deliverable:** A documented red–green–refactor exercise.
+
+### Day 24 — Dependency inversion
+- [ ] Design an order service that requires a notification service.
+- [ ] Introduce an abstraction for notifications.
+- [ ] Inject the dependency rather than constructing it inside the order service.
+- [ ] Test the service with a fake implementation.
+
+**Deliverable:** A loosely coupled service.
+
+### Day 25 — SOLID principles in practice
+- [ ] Review one existing project from the previous weeks.
+- [ ] Identify violations of single responsibility and dependency inversion.
+- [ ] Refactor one concrete design problem.
+- [ ] Explain the improvement and any trade-offs.
+
+**Deliverable:** Before-and-after design documentation.
+
+### Day 26 — Debugging and defensive programming
+- [ ] Intentionally introduce three bugs into a small program.
+- [ ] Reproduce and isolate each failure.
+- [ ] Use breakpoints or logging to locate the cause.
+- [ ] Record the root cause and fix for each bug.
+
+**Deliverable:** A debugging journal.
+
+### Day 27 — Algorithmic thinking
+- [ ] Solve two array or string problems.
+- [ ] Explain the algorithm before implementing it.
+- [ ] Analyze time and space complexity at a basic level.
+- [ ] Compare a straightforward solution with an improved one.
+
+**Deliverable:** Two explained and tested algorithm solutions.
+
+### Day 28 — Month-one practical project
+- [ ] Build a library-management console application.
+- [ ] Support books, members, borrowing, and returning.
+- [ ] Enforce borrowing rules.
+- [ ] Persist data or document a deliberate in-memory limitation.
+- [ ] Add unit tests and usage instructions.
+
+**Deliverable:** A complete object-oriented project.
+
+### Day 29 — Refactor and review
+- [ ] Review the library application's class responsibilities.
+- [ ] Remove duplicated logic and unnecessary coupling.
+- [ ] Improve naming and error handling.
+- [ ] Run the full test suite.
+
+**Deliverable:** A cleaner, tested application.
+
+### Day 30 — Month-one assessment
+- [ ] Solve an unfamiliar object-oriented problem from scratch.
+- [ ] Write requirements, pseudocode, class responsibilities, and tests.
+- [ ] Complete a retrospective on problem-solving difficulties.
+- [ ] Publish a month-one summary on GitHub.
+
+**Deliverable:** A month-one portfolio review and measurable baseline.
+
+---
+
+# MONTH 2 — Databases, ASP.NET Core and Web APIs
+
+**Goal:** Build a maintainable backend application that stores data and exposes useful API endpoints.
+
+## Week 5 — SQL and relational data
+
+### Day 31 — Relational database fundamentals
+- [ ] Install or access a SQL database.
+- [ ] Design tables for customers, products, and orders.
+- [ ] Identify primary keys, foreign keys, and relationships.
+- [ ] Document your schema.
+
+**Deliverable:** A relational database design.
+
+### Day 32 — SQL CRUD operations
+- [ ] Write `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements.
+- [ ] Use appropriate filters and ordering.
+- [ ] Test operations against sample data.
+- [ ] Document the queries and results.
+
+**Deliverable:** A SQL practice script.
+
+### Day 33 — Joins and aggregation
+- [ ] Query orders together with customer information.
+- [ ] Use joins, grouping, and aggregate functions.
+- [ ] Calculate totals by customer.
+- [ ] Explain the difference between the query results.
+
+**Deliverable:** A reporting query collection.
+
+### Day 34 — Constraints and transactions
+- [ ] Add constraints to protect data integrity.
+- [ ] Design an order-creation transaction.
+- [ ] Ensure related changes succeed or fail together.
+- [ ] Test failure scenarios.
+
+**Deliverable:** A transaction-based SQL exercise.
+
+### Day 35 — Database design and normalization
+- [ ] Review your schema for duplicated data.
+- [ ] Normalize tables where appropriate.
+- [ ] Document the purpose of each relationship.
+- [ ] Create a revised schema if needed.
+
+**Deliverable:** A documented database design.
+
+### Day 36 — Query parameters and security
+- [ ] Practice parameterized SQL queries.
+- [ ] Understand SQL injection risks.
+- [ ] Avoid concatenating untrusted input into SQL.
+- [ ] Test with unusual user input.
+
+**Deliverable:** A safer database-access exercise.
+
+### Day 37 — Weekly database assessment
+- [ ] Build a small sales database.
+- [ ] Insert sample customers, products, and orders.
+- [ ] Write five meaningful reporting queries.
+- [ ] Verify the results independently.
+
+**Deliverable:** A database project with sample reports.
+
+## Week 6 — Entity Framework Core
+
+### Day 38 — First EF Core project
+- [ ] Add EF Core and a suitable database provider.
+- [ ] Create entity classes and a `DbContext`.
+- [ ] Configure the connection string.
+- [ ] Run a basic database query.
+
+**Deliverable:** A working EF Core project.
+
+### Day 39 — Migrations
+- [ ] Create an initial migration.
+- [ ] Apply it to the database.
+- [ ] Change an entity and generate another migration.
+- [ ] Inspect the resulting schema changes.
+
+**Deliverable:** A versioned database schema.
+
+### Day 40 — CRUD with EF Core
+- [ ] Implement create, read, update, and delete operations.
+- [ ] Use asynchronous database methods.
+- [ ] Handle missing records.
+- [ ] Test each operation.
+
+**Deliverable:** A working data-access component.
+
+### Day 41 — Relationships and loading
+- [ ] Model customers and orders.
+- [ ] Configure their relationship.
+- [ ] Practice eager and explicit loading.
+- [ ] Inspect queries to avoid unnecessary database calls.
+
+**Deliverable:** A relational EF Core model.
+
+### Day 42 — LINQ queries with EF Core
+- [ ] Filter and sort database records.
+- [ ] Project results into smaller objects.
+- [ ] Add pagination.
+- [ ] Learn which parts of a query execute in the database.
+
+**Deliverable:** A paginated data-query component.
+
+### Day 43 — Repository and service boundaries
+- [ ] Separate business rules from persistence concerns.
+- [ ] Decide whether a repository abstraction adds value for your application.
+- [ ] Inject dependencies through constructors.
+- [ ] Test business logic independently where practical.
+
+**Deliverable:** A maintainable application structure.
+
+### Day 44 — Database assessment
+- [ ] Build a small product and inventory data layer.
+- [ ] Add migrations, relationships, and validation.
+- [ ] Test important persistence operations.
+- [ ] Document setup and database requirements.
+
+**Deliverable:** A tested EF Core component.
+
+## Week 7 — ASP.NET Core Web API
+
+### Day 45 — Create your first API
+- [ ] Create an ASP.NET Core Web API project.
+- [ ] Explore the application entry point and dependency injection.
+- [ ] Add a simple endpoint.
+- [ ] Run the API and inspect its response.
+
+**Deliverable:** A running API project.
+
+### Day 46 — HTTP methods and status codes
+- [ ] Implement GET, POST, PUT, and DELETE endpoints.
+- [ ] Choose appropriate HTTP status codes.
+- [ ] Test requests using Swagger UI or an HTTP client.
+- [ ] Document the endpoint behavior.
+
+**Deliverable:** An API endpoint collection.
+
+### Day 47 — DTOs and request validation
+- [ ] Create request and response DTOs.
+- [ ] Avoid exposing database entities directly as API contracts.
+- [ ] Validate required fields and invalid values.
+- [ ] Return consistent validation responses.
+
+**Deliverable:** A validated API request flow.
+
+### Day 48 — Dependency injection and configuration
+- [ ] Register application services in the DI container.
+- [ ] Use configuration for environment-specific settings.
+- [ ] Understand service lifetimes.
+- [ ] Avoid hardcoded secrets.
+
+**Deliverable:** A configurable API.
+
+### Day 49 — EF Core integration
+- [ ] Connect your API to the database.
+- [ ] Implement product or task CRUD endpoints.
+- [ ] Handle missing records and database errors appropriately.
+- [ ] Test persistence through HTTP requests.
+
+**Deliverable:** A database-backed API.
+
+### Day 50 — Filtering, sorting, and pagination
+- [ ] Add filtering to a collection endpoint.
+- [ ] Support sorting and pagination.
+- [ ] Validate pagination parameters.
+- [ ] Test empty and large result sets.
+
+**Deliverable:** A practical collection endpoint.
+
+### Day 51 — API assessment
+- [ ] Build a complete task-management API.
+- [ ] Support CRUD operations and request validation.
+- [ ] Connect it to a database.
+- [ ] Document routes and example requests.
+
+**Deliverable:** A documented task API.
+
+## Week 8 — API quality and testing
+
+### Day 52 — Middleware and request pipelines
+- [ ] Explore how requests pass through middleware.
+- [ ] Add centralized exception handling.
+- [ ] Return consistent error responses.
+- [ ] Test both successful and failed requests.
+
+**Deliverable:** A predictable error-handling pipeline.
+
+### Day 53 — Logging and observability
+- [ ] Add structured logging for important operations.
+- [ ] Record useful diagnostic information.
+- [ ] Avoid logging passwords, tokens, or sensitive data.
+- [ ] Reproduce an error and use logs to investigate it.
+
+**Deliverable:** A diagnosable API.
+
+### Day 54 — Async programming
+- [ ] Review `async`, `await`, and `Task`.
+- [ ] Use asynchronous database operations.
+- [ ] Avoid blocking asynchronous code with `.Result` or `.Wait()`.
+- [ ] Test cancellation and error propagation where appropriate.
+
+**Deliverable:** An asynchronous API workflow.
+
+### Day 55 — Unit tests for services
+- [ ] Write tests for business rules.
+- [ ] Substitute dependencies with fakes or mocks where useful.
+- [ ] Test success and failure cases.
+- [ ] Check that tests do not depend on execution order.
+
+**Deliverable:** A service unit-test suite.
+
+### Day 56 — Integration testing
+- [ ] Create API integration tests.
+- [ ] Test HTTP requests, responses, and validation.
+- [ ] Use an isolated test database or supported test host.
+- [ ] Verify that important endpoints work together.
+
+**Deliverable:** A repeatable integration-test suite.
+
+### Day 57 — API security fundamentals
+- [ ] Review input validation and error handling.
+- [ ] Check that sensitive configuration is not committed.
+- [ ] Understand authentication versus authorization.
+- [ ] Identify endpoints that should require access control.
+
+**Deliverable:** An API security checklist.
+
+### Day 58 — Refactoring and performance
+- [ ] Review slow or unnecessarily complex queries.
+- [ ] Inspect database query behavior.
+- [ ] Avoid unnecessary data loading and oversized responses.
+- [ ] Refactor without breaking tests.
+
+**Deliverable:** A measured and improved API.
+
+### Day 59 — Month-two project completion
+- [ ] Complete the task-management API.
+- [ ] Add persistence, validation, logging, and automated tests.
+- [ ] Write installation and usage instructions.
+- [ ] Verify a clean setup from your documented instructions.
+
+**Deliverable:** A portfolio-ready backend project.
+
+### Day 60 — Month-two assessment
+- [ ] Build one small endpoint independently.
+- [ ] Explain its request flow from HTTP to database and back.
+- [ ] Review test coverage and known limitations.
+- [ ] Publish a month-two retrospective.
+
+**Deliverable:** A documented API assessment.
+
+---
+
+# MONTH 3 — Professional Engineering and Portfolio Delivery
+
+**Goal:** Improve security, reliability, maintainability, and deployment skills through one complete application.
+
+## Week 9 — Authentication and authorization
+
+### Day 61 — Authentication fundamentals
+- [ ] Study authentication, authorization, and identity.
+- [ ] Decide how users will authenticate in your project.
+- [ ] Document the trust boundaries of the application.
+- [ ] Identify public and protected operations.
+
+**Deliverable:** An authentication design.
+
+### Day 62 — Implement an authentication flow
+- [ ] Use ASP.NET Core Identity or a suitable established authentication provider.
+- [ ] Configure user registration or sign-in.
+- [ ] Follow secure credential-storage practices.
+- [ ] Test valid and invalid sign-in attempts.
+
+**Deliverable:** A working authentication flow.
+
+### Day 63 — Authorization policies
+- [ ] Protect selected endpoints.
+- [ ] Configure roles or policies where appropriate.
+- [ ] Ensure users cannot access unauthorized resources.
+- [ ] Test anonymous, authorized, and unauthorized requests.
+
+**Deliverable:** Tested authorization rules.
+
+### Day 64 — Ownership and access control
+- [ ] Associate records with their owners.
+- [ ] Prevent users from accessing other users' records.
+- [ ] Check ownership in the business logic or data-access flow.
+- [ ] Test cross-user access attempts.
+
+**Deliverable:** Resource-level authorization.
+
+### Day 65 — Secrets and secure configuration
+- [ ] Remove secrets from source code.
+- [ ] Configure development secrets and deployment environment variables.
+- [ ] Review HTTPS and production configuration.
+- [ ] Document safe configuration practices.
+
+**Deliverable:** A security-conscious configuration.
+
+### Day 66 — Security testing
+- [ ] Test authentication failures and forbidden operations.
+- [ ] Review validation and error responses.
+- [ ] Check for accidental information disclosure.
+- [ ] Document security limitations and mitigations.
+
+**Deliverable:** A security test report.
+
+### Day 67 — Weekly security assessment
+- [ ] Review all protected endpoints.
+- [ ] Test authorization boundaries.
+- [ ] Fix identified issues.
+- [ ] Record remaining risks.
+
+**Deliverable:** An updated access-control implementation.
+
+## Week 10 — Architecture and maintainability
+
+### Day 68 — Application layering
+- [ ] Review API, business logic, and data-access responsibilities.
+- [ ] Separate concerns where the complexity justifies it.
+- [ ] Avoid creating unnecessary layers for their own sake.
+- [ ] Document the application structure.
+
+**Deliverable:** A clear application architecture.
+
+### Day 69 — Domain modeling
+- [ ] Refine the main business entities.
+- [ ] Identify invariants and domain rules.
+- [ ] Decide which operations belong to each entity or service.
+- [ ] Test the most important business rules.
+
+**Deliverable:** A stronger domain model.
+
+### Day 70 — Design patterns in context
+- [ ] Select a real problem involving object creation or interchangeable behavior.
+- [ ] Evaluate a suitable pattern, such as Strategy or Factory.
+- [ ] Implement it only if it improves the design.
+- [ ] Explain why simpler alternatives were or were not suitable.
+
+**Deliverable:** A documented design-pattern exercise.
+
+### Day 71 — Background work
+- [ ] Build a background task for a noncritical operation.
+- [ ] Use a supported .NET background-service pattern.
+- [ ] Handle cancellation and failures.
+- [ ] Test its lifecycle and logging.
+
+**Deliverable:** A background-processing component.
+
+### Day 72 — Caching
+- [ ] Identify a read-heavy operation that could benefit from caching.
+- [ ] Implement a suitable cache strategy.
+- [ ] Define expiration and invalidation behavior.
+- [ ] Verify correctness when cached data changes.
+
+**Deliverable:** A measured caching improvement.
+
+### Day 73 — API versioning and compatibility
+- [ ] Study API contract compatibility.
+- [ ] Design a nonbreaking response change.
+- [ ] Decide when explicit API versioning is justified.
+- [ ] Document your compatibility policy.
+
+**Deliverable:** An API evolution exercise.
+
+### Day 74 — Architecture review
+- [ ] Review dependencies and responsibilities.
+- [ ] Remove unnecessary abstractions.
+- [ ] Check error handling and testability.
+- [ ] Create an architecture diagram.
+
+**Deliverable:** An architecture review report.
+
+## Week 11 — Deployment and automation
+
+### Day 75 — Production configuration
+- [ ] Separate development and production settings.
+- [ ] Configure logging and database connections.
+- [ ] Review health and readiness requirements.
+- [ ] Verify that secrets are supplied securely.
+
+**Deliverable:** Production configuration documentation.
+
+### Day 76 — Docker fundamentals
+- [ ] Write a Dockerfile for the application.
+- [ ] Build an image.
+- [ ] Run the container locally.
+- [ ] Verify the API is reachable.
+
+**Deliverable:** A containerized application.
+
+### Day 77 — Database deployment
+- [ ] Configure a suitable database for the target environment.
+- [ ] Apply schema migrations safely.
+- [ ] Configure persistence and connection settings.
+- [ ] Test the application against the deployed database.
+
+**Deliverable:** A reproducible deployment configuration.
+
+### Day 78 — CI with GitHub Actions
+- [ ] Create a GitHub Actions workflow.
+- [ ] Restore dependencies and build the project.
+- [ ] Run automated tests on pushes and pull requests.
+- [ ] Fix any failures.
+
+**Deliverable:** Automated build and test checks.
+
+### Day 79 — Code quality
+- [ ] Enable or review appropriate .NET analyzers.
+- [ ] Fix meaningful warnings.
+- [ ] Format the code consistently.
+- [ ] Document quality checks used in the project.
+
+**Deliverable:** A cleaner, consistently formatted codebase.
+
+### Day 80 — Performance and reliability
+- [ ] Identify a potential bottleneck.
+- [ ] Measure before optimizing.
+- [ ] Test error handling and recovery.
+- [ ] Document the results instead of making unsupported performance claims.
+
+**Deliverable:** A performance and reliability report.
+
+### Day 81 — Deployment practice
+- [ ] Choose a suitable hosting platform.
+- [ ] Deploy the application and configure required environment variables.
+- [ ] Verify the public API and database connection.
+- [ ] Document how to reproduce or troubleshoot the deployment.
+
+**Deliverable:** A deployed application or a reproducible deployment package.
+
+## Week 12 — Capstone project
+
+### Day 82 — Define the capstone
+- [ ] Choose a problem worth solving, such as personal finance tracking, inventory management, or task management.
+- [ ] Identify users and their needs.
+- [ ] Define a small set of essential features.
+- [ ] Write acceptance criteria and a list of exclusions.
+
+**Deliverable:** A clear project specification.
+
+### Day 83 — Design the solution
+- [ ] Identify entities, responsibilities, and relationships.
+- [ ] Design the database schema and API contracts.
+- [ ] Identify security requirements.
+- [ ] Break the project into small, testable tasks.
+
+**Deliverable:** A design and implementation plan.
+
+### Day 84 — Implement the core domain
+- [ ] Implement the main entities and business rules.
+- [ ] Validate important state changes.
+- [ ] Write unit tests for the domain.
+- [ ] Commit the first functional milestone.
+
+**Deliverable:** A tested domain layer.
+
+### Day 85 — Implement persistence and APIs
+- [ ] Add EF Core persistence and migrations.
+- [ ] Implement essential endpoints.
+- [ ] Add request validation and error handling.
+- [ ] Test database-backed operations.
+
+**Deliverable:** A functional backend.
+
+### Day 86 — Add security and integration tests
+- [ ] Configure the required authentication and authorization.
+- [ ] Add integration tests for essential user flows.
+- [ ] Test invalid input and unauthorized access.
+- [ ] Fix high-priority defects.
+
+**Deliverable:** A more secure, tested application.
+
+### Day 87 — Prepare the release
+- [ ] Add logging and production configuration.
+- [ ] Create a Docker image or deployment configuration.
+- [ ] Verify the build and test workflow.
+- [ ] Test the release candidate.
+
+**Deliverable:** A release candidate.
+
+### Day 88 — Documentation and deployment
+- [ ] Write the project README.
+- [ ] Document setup, configuration, endpoints, and tests.
+- [ ] Add an architecture diagram and example requests.
+- [ ] Deploy the application or document reproducible deployment steps.
+
+**Deliverable:** A usable project with professional documentation.
+
+### Day 89 — Final quality review
+- [ ] Clone the repository into a clean folder.
+- [ ] Follow your own setup instructions from scratch.
+- [ ] Run the build and tests.
+- [ ] Fix missing dependencies, broken instructions, or exposed secrets.
+
+**Deliverable:** A verified, reproducible project.
+
+### Day 90 — Portfolio release and retrospective
+- [ ] Tag a release, such as `v1.0.0`.
+- [ ] Review the 90-day Git history.
+- [ ] Summarize completed features, test results, and known limitations.
+- [ ] Identify your three biggest remaining skill gaps.
+- [ ] Plan the next 30 days based on those gaps.
+
+**Deliverable:** A public portfolio project and a concrete next-step plan.
+
+---
+
+# Daily documentation template
+
+Create a Markdown file for each learning session using this structure.
+
+## Day [number] — [topic]
+
+### 1. Objective
+What problem or concept am I working on?
+
+### 2. Problem statement
+What are the inputs, outputs, constraints, and expected behavior?
+
+### 3. My approach
+Describe the algorithm, class responsibilities, and design choices before coding.
+
+### 4. Implementation
+Link to the relevant source files and explain the important decisions.
+
+### 5. Testing
+List normal cases, boundary cases, and failure cases.
+
+### 6. What I learned
+Explain the concepts in your own words.
+
+### 7. Difficulties and solutions
+What did I misunderstand? How did I investigate and fix it?
+
+### 8. Improvement
+What would I change if I solved this problem again?
+
+### 9. Daily checklist
+- [ ] Solved the problem independently.
+- [ ] Ran the program successfully.
+- [ ] Tested important cases.
+- [ ] Updated documentation.
+- [ ] Committed my work.
+
+### 10. Tomorrow's target
+State one specific, achievable objective.
+
+---
+
+# Recommended repository structure
+
+```text
+dotnet-90-day-journey/
+├── README.md
+├── docs/
+│   ├── daily/
+│   ├── weekly-reviews/
+│   ├── architecture/
+│   └── decisions/
+├── src/
+│   ├── ProblemSolvingLab/
+│   ├── LibraryManagement/
+│   └── Capstone/
+├── tests/
+│   ├── ProblemSolvingLab.Tests/
+│   └── Capstone.Tests/
+└── .github/
+    └── workflows/
+        └── dotnet.yml
 ```
 
-Run `dotnet test` once the test projects exist. If a day is only documentation or a focused experiment, run the relevant checks rather than forcing a meaningless build. Before pushing, inspect `git diff --staged` and confirm no secrets or local data are included.
+Adjust the structure as the projects grow. Small exercises can have their own folders, while the capstone should have its own clear source and test projects.
 
-## Milestone acceptance criteria
+# Git workflow
 
-### Day 14 — CLI milestone
-- [ ] Add, list, update/complete, and delete learning goals or sessions.
-- [ ] Data persists between runs using JSON.
-- [ ] Invalid input does not crash the app unexpectedly.
-- [ ] README explains how to run it and gives a sample session.
+Make small, meaningful commits throughout the day rather than saving all your progress in one large commit.
 
-### Day 35 — quality milestone
-- [ ] Core rules have automated unit tests.
-- [ ] Dependencies can be replaced with fakes in tests.
-- [ ] Code builds cleanly and the project is understandable from its docs.
+Examples:
 
-### Day 56 — API milestone
-- [ ] API has documented CRUD endpoints and a relational database.
-- [ ] Validation, error responses, filtering, and pagination behave predictably.
-- [ ] Tests cover core business rules and API contracts.
+- `feat: implement bank account withdrawal rules`
+- `test: add boundary tests for discount calculator`
+- `refactor: separate order calculation responsibilities`
+- `docs: record week 2 design lessons`
+- `fix: prevent duplicate course enrollment`
 
-### Day 70 — reliability milestone
-- [ ] Authentication/authorization requirements are implemented appropriately for the project scope.
-- [ ] Health checks, structured logging, and useful error handling are available.
-- [ ] Tests and local setup are repeatable.
+Use branches and pull requests when useful, even for solo projects, to practice a professional workflow.
 
-### Day 90 — portfolio milestone
-- [ ] A fresh clone can be configured and run by following the README.
-- [ ] CI builds and tests the project.
-- [ ] The repository includes architecture/setup notes, API examples, test instructions, and a release tag.
-- [ ] Daily documentation shows the progression from practice exercises to a shipped application.
+# Definition of done
 
-## Official references
+A day is complete when you can:
 
-Use the official documentation as a reference, not as a substitute for implementation:
+1. Explain the problem in your own words.
+2. Describe your approach before reading a solution.
+3. Produce a working implementation.
+4. Test important normal and edge cases.
+5. Explain why you organized the code as you did.
+6. Document what you learned and commit the result.
 
-- [.NET tutorials](https://learn.microsoft.com/en-us/dotnet/core/tutorials/) — console apps, debugging, publishing, libraries, and tests.
-- [C# language guide](https://learn.microsoft.com/en-us/dotnet/csharp/) — language features and idioms.
-- [ASP.NET Core controller-based Web API tutorial](https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api) — routes, CRUD, DI, and response behavior.
-- [Entity Framework Core installation/getting started](https://learn.microsoft.com/en-us/ef/core/get-started/overview/install) — packages, providers, and tooling.
-- [Testing in .NET](https://learn.microsoft.com/en-us/dotnet/core/testing/) — unit, integration, and other test types.
-- [.NET support policy](https://dotnet.microsoft.com/en-us/platform/support/policy) — confirm the supported SDK version and servicing status.
-
-## Important scope note
-
-This plan is ambitious but adjustable. If you fall behind, keep the daily documentation habit and prioritize a working, tested vertical slice over checking every box on the original date. Authentication and deployment can take longer depending on your environment. Do not publish credentials or real personal data. The goal is to demonstrate sound engineering habits and a project you can explain—not to collect technologies without understanding them.
+**The objective is not 90 green boxes at any cost. The objective is 90 days of increasingly independent engineering practice.**
